@@ -160,4 +160,20 @@ trait BootstrapHelper extends RequestClient {
       } yield token).headOption.getOrElse(throw new Exception("No Verification Found:" + res.status))
     }.getOrElse(throw new Exception("Verification Failed:" + res.status))
   }
+
+  def simpleExtractionTenantId(keycloakToken: String): Option[String] = {
+    keycloakToken.split("\\.", 3).toList match {
+      case List(_,p,_) =>
+        val r = JsonHelper.use(Base64.getDecoder.decode(p)).map { x =>
+          (for {
+            JObject(c) <- x
+            JField("sub", JString(tenantId)) <- c
+          } yield tenantId).headOption.getOrElse(throw new Exception("No Tenant Found"))
+        }.getOrElse(throw new Exception("Parsing failed"))
+        Option(r)
+      case Nil => None
+    }
+
+  }
+
 }

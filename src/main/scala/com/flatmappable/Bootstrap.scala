@@ -3,6 +3,7 @@ package com.flatmappable
 import java.util.UUID
 
 import com.flatmappable.util.BootstrapHelper
+import scala.io.StdIn.readLine
 
 object Bootstrap extends BootstrapHelper {
 
@@ -15,17 +16,26 @@ object Bootstrap extends BootstrapHelper {
       case List(env, username, password, secret) =>
         currEvt = env
 
-        val purpose = "Farm_Carlos"
-        val groupId = "d6e525c0-41e2-4a77-925c-4d6ea4fb8431"
-        val tenantId = "963995ed-ce12-4ea5-89dc-b181701d1d7b"
+        val purpose = {
+          val p = readLine("Boostrap Token Purpose[Kitchen_Carlos]:")
+          if(p.isEmpty) "Farm_Carlos"
+          else p
+        }
+
+        val groupId = {
+          val p = readLine("Group ID[d6e525c0-41e2-4a77-925c-4d6ea4fb8431]:")
+          if(p.isEmpty) "d6e525c0-41e2-4a77-925c-4d6ea4fb8431"
+          else p
+        }
 
         println("- getting keycloak token for " + username + " @" + env)
         val keyCloakAccessToken = getKeycloakToken(username, password, secret)
-        println(keyCloakAccessToken)
+        val tenantId = simpleExtractionTenantId(keyCloakAccessToken).getOrElse("963995ed-ce12-4ea5-89dc-b181701d1d7b")
+
         val uuid = UUID.randomUUID()
         println("- registering key for " + uuid.toString)
         val privKey = registerKey(uuid)
-        println("- creating bootstrap token")
+        println("- creating bootstrap token with purpose " + purpose + " for group " + groupId)
         val bootstrapToken = createBootstrapToken(keyCloakAccessToken, purpose, groupId, tenantId)
         println("- using bootstrap token")
         val (c, a, v) = useBootstrapToken(bootstrapToken, uuid, privKey)
