@@ -52,11 +52,12 @@ object Bootstrap extends BootstrapHelper {
         Thread.sleep(2000)
         val vr = verifyHash(hash, v)
         println(" upp:" + vr)
+        sys.exit(0)
 
       case _ =>
         println("missing params")
         println("params needed: env username password client_secret")
-        sys.exit()
+        sys.exit(1)
 
     }
 
