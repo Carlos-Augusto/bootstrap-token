@@ -52,7 +52,7 @@ trait BootstrapHelper extends RequestClient {
       (for {
         JObject(c) <- x
         JField("access_token", JString(token)) <- c
-      } yield token).headOption.getOrElse(throw new Exception("No Access Token Retrieved"))
+      } yield token).headOption.getOrElse(throw new Exception("No Access Token Retrieved: " + x))
     }
   }.getOrElse(throw new Exception("Error getting keycloak token"))
 
