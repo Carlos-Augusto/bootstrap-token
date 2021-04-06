@@ -28,14 +28,12 @@ object Bootstrap extends BootstrapHelper {
           else p
         }
 
-        println("- getting keycloak token for " + username + " @" + env)
-        val keyCloakAccessToken = getKeycloakToken(username, password, secret)
-        val tenantId = simpleExtractionTenantId(keyCloakAccessToken).getOrElse("963995ed-ce12-4ea5-89dc-b181701d1d7b")
-
         val uuid = UUID.randomUUID()
         println("- registering key for " + uuid.toString)
         val privKey = registerKey(uuid)
-        println("- creating bootstrap token with purpose " + purpose + " for group " + groupId)
+        val keyCloakAccessToken = getKeycloakToken(username, password, secret)
+        val tenantId = simpleExtractionTenantId(keyCloakAccessToken).getOrElse("963995ed-ce12-4ea5-89dc-b181701d1d7b")
+        println("- creating bootstrap token with purpose " + purpose + " for group " + groupId + " for " + username + " @" + env)
         val bootstrapToken = createBootstrapToken(keyCloakAccessToken, purpose, groupId, tenantId)
         println("- using bootstrap token")
         val (c, a, v) = useBootstrapToken(bootstrapToken, uuid, privKey)
