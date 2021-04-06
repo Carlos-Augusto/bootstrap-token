@@ -55,8 +55,7 @@ object Bootstrap extends BootstrapHelper {
         sys.exit(0)
 
       case _ =>
-        println("missing params")
-        println("params needed: env username password client_secret")
+        println("params: env username password client_secret")
         sys.exit(1)
 
     }
