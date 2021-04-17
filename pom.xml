@@ -69,6 +69,21 @@
     </properties>
 
     <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/com.pauldijou/jwt-core -->
+        <dependency>
+            <groupId>com.pauldijou</groupId>
+            <artifactId>jwt-core_2.13</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.bitbucket.b_c/jose4j -->
+        <dependency>
+            <groupId>org.bitbucket.b_c</groupId>
+            <artifactId>jose4j</artifactId>
+            <version>0.7.2</version>
+        </dependency>
+
         <dependency>
             <groupId>com.ubirch</groupId>
             <artifactId>ubirch-client-scala_2.13</artifactId>
