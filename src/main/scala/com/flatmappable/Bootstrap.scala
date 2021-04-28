@@ -40,8 +40,8 @@ object Bootstrap extends BootstrapHelper {
         println(" c:" + c)
         println(" a:" + a)
         println(" v:" + v)
-        println("- registering device with registration token")
-        registerDevice(uuid, "borrador " + uuid, c) // check result
+        val rec = registerDevice(uuid, "borrador " + uuid, c) // check result
+        println("- registering device with registration token: " +  rec.status)
         println("- sending upp with anchoring token")
         val (hash, ur) = sendUPP(uuid, a, getProtocol(privKey))
         println(s" status:${ur.status}  | ${ur.headers.map(_.toString).mkString(",")}")
