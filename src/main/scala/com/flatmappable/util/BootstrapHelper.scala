@@ -95,7 +95,7 @@ trait BootstrapHelper extends RequestClient {
   }.getOrElse(throw new Exception("Error getting ubirch token"))
 
   def useBootstrapToken(bootstrapToken: String, uuid: UUID, privKey: PrivKey): (String, String, String) = {
-    //privKey.setSignatureAlgorithm("SHA256WITHPLAIN-ECDSA") Use for raw signing
+    privKey.setSignatureAlgorithm("SHA256WITHPLAIN-ECDSA")
     val useBootstrapReq = new HttpPost(s"https://token.$env.ubirch.com/api/tokens/v2/bootstrap")
     val bootstrapUsage = s"""{"token":"$bootstrapToken","identity":"${uuid.toString}"}"""
     val signature = Base64.getEncoder.encodeToString(signSHA512(privKey, bootstrapUsage.getBytes(StandardCharsets.UTF_8)))
@@ -119,7 +119,7 @@ trait BootstrapHelper extends RequestClient {
   }.getOrElse(throw new Exception("Error getting ubirch bootstrap tokens"))
 
   def registerDevice(uuid: UUID, description: String, registrationToken: String): ResponseData[String] = {
-    val consoleDeviceReq = new HttpPost(s"https://api.console.$env.ubirch.com/ubirch-web-ui/api/v1/devices/create")
+    val consoleDeviceReq = new HttpPost(s"https://api.console.$env.ubirch.com/ubirch-web-ui/api/v1/devices/create?with_api_info=true")
     val registrationData =
       s"""
          |{
